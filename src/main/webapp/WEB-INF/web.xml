@@ -3,4 +3,25 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+    <servlet>
+        <!--FreemarkerServlet用于解析ftl文件-->
+        <servlet-name>freemarker</servlet-name>
+        <servlet-class>freemarker.ext.servlet.FreemarkerServlet</servlet-class>
+        <!--定义模板的存储路径-->
+        <init-param>
+            <param-name>TemplatePath</param-name>
+            <param-value>/WEB-INF/ftl</param-value>
+        </init-param>
+        <!--用于设置读取ftl文件时采用的字符集，从而避免中文乱码问题-->
+        <init-param>
+            <param-name>default_encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </servlet>
+    <!--servlet映射：当我们访问的url以ftl结尾时，会自动截取前面的文件名，再在/WEB-INF/ftl目录中找到对应的文件，
+    进行解析和加载-->
+    <servlet-mapping>
+        <servlet-name>freemarker</servlet-name>
+        <url-pattern>*.ftl</url-pattern>
+    </servlet-mapping>
 </web-app>

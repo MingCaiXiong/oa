@@ -12,6 +12,13 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+    <repositories>
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <!--mybatis框架-->
@@ -39,6 +46,8 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+            <!--只参与Maven Test-->
+            <scope>test</scope>
         </dependency>
 
         <!--日志输出-->
@@ -46,6 +55,21 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
+        </dependency>
+
+        <!--前端依赖-->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.29</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <!--依赖只参与编译测试，不进行发布，因为tomcat已经自带了-->
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
