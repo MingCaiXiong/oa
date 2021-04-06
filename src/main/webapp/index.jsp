@@ -12,6 +12,6 @@
 </head>
 <body>
 <h1>test</h1>
-<h2><a href="/test">第一个Servlet</a></h2>
+<h2><a href="/login.html">第一个Servlet</a></h2>
 </body>
 </html>

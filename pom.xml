@@ -71,5 +71,10 @@
             <!--依赖只参与编译测试，不进行发布，因为tomcat已经自带了-->
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.75</version>
+        </dependency>
     </dependencies>
 </project>
