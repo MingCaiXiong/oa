@@ -12,6 +12,7 @@ import java.util.function.Function;
 public class MyBatisUtils {
     // 利用static属于类不属于对象，且全局唯一
     private static SqlSessionFactory sqlSessionFactory = null;
+
     // 利用静态块在初始化类时实例化sqlSessionFactory
     static {
         Reader reader = null;
@@ -25,14 +26,15 @@ public class MyBatisUtils {
         }
     }
 
-    public static Object executeQuery(Function<SqlSession,Object> func){
+    public static Object executrQuery(Function<SqlSession, Object> func) {
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
+        Object obj = null;
         try {
-            return func.apply(sqlSession);
+            obj = func.apply(sqlSession);
         } finally {
             sqlSession.close();
-            return null;
         }
+        return obj;
     }
 }
