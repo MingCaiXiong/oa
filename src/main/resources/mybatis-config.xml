@@ -20,6 +20,7 @@
     </environments>
     <mappers>
         <mapper resource="mappers/test.xml"/>
+        <mapper resource="mappers/user.xml"/>
         <!-- <mapper class="top.xiongmingcai.dao.StudentDao"/>-->
         <!-- <package name="top.xiongmingcai.dao"/> -->
     </mappers>
