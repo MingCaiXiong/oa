@@ -28,6 +28,7 @@
         <mapper resource="mappers/user.xml"/>
         <mapper resource="mappers/sysrbac.xml"/>
         <mapper resource="mappers/employee.xml"/>
+        <mapper resource="mappers/depaetment.xml"/>
         <!-- <mapper class="top.xiongmingcai.dao.StudentDao"/>-->
         <!-- <package name="top.xiongmingcai.dao"/> -->
     </mappers>
