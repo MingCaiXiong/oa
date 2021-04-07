@@ -5,6 +5,7 @@ import top.xiongmingcai.oa.dao.UserDao;
 import top.xiongmingcai.oa.entity.Node;
 import top.xiongmingcai.oa.entity.User;
 import top.xiongmingcai.oa.service.exception.BusinessException;
+import top.xiongmingcai.oa.utils.MD5Utils;
 
 import java.util.List;
 
@@ -28,13 +29,15 @@ public class UserService {
             //抛出用户不存在异常
             throw new BusinessException("L001", "用户名为空");
             // 密码输入错误校验
-        } else if (!password.equals(user.getPassword())) {
+        }
+        String md5 = MD5Utils.md5Encrypt(password, user.getSalt());
+        if (!md5.equals(user.getPassword())) {
             throw new BusinessException("L002", "密码错误");
         }
         return user;
     }
 
     public List<Node> selectNodeByUserId(Long userId) {
-       return rbacDao.selectByUsername(userId);
+        return rbacDao.selectByUsername(userId);
     }
 }
