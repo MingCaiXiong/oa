@@ -18,4 +18,7 @@ public class UserServiceTest extends TestCase {
     public void testCheckLogin3() {
         service.checkLogin("m8","test");
     }
+
+    public void testCheckLogin() {
+    }
 }

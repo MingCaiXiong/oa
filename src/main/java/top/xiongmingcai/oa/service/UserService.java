@@ -1,11 +1,16 @@
 package top.xiongmingcai.oa.service;
 
+import top.xiongmingcai.oa.dao.RbacDao;
 import top.xiongmingcai.oa.dao.UserDao;
+import top.xiongmingcai.oa.entity.Node;
 import top.xiongmingcai.oa.entity.User;
 import top.xiongmingcai.oa.service.exception.BusinessException;
 
+import java.util.List;
+
 public class UserService {
     private UserDao userDao = new UserDao();
+    private RbacDao rbacDao = new RbacDao();
 
     /**
      * 根据前台输入进行校验
@@ -29,4 +34,7 @@ public class UserService {
         return user;
     }
 
+    public List<Node> selectNodeByUserId(Long userId) {
+       return rbacDao.selectByUsername(userId);
+    }
 }

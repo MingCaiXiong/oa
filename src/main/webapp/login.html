@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>慕课网办公OA系统</title>
-    <link rel="stylesheet" href="/resources/layui/css/layui.css">
+    <link rel="stylesheet" href="./resources/layui/css/layui.css">
     <style>
         body{
             background-color: #F2F2F2;
@@ -28,7 +28,7 @@
 <body>
 <div class="oa-container">
     <h1 style="text-align: center;margin-bottom: 20px">登录后台</h1>
-    <form class="layui-form">
+    <form class="layui-form" method="post">
         <div class="layui-form-item">
             <input type="text" id="username" lay-verify="required" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input" >
         </div>
@@ -41,7 +41,7 @@
         </div>
     </form>
 </div>
-<script src="/resources/layui/layui.all.js"></script>
+<script src="./resources/layui/layui.all.js"></script>
 <script>
     // 表单提交事件
     layui.form.on("submit(login)" , function(formdata){//data参数包含了当前表单的数据
@@ -54,10 +54,10 @@
             dataType : "json" ,
             success : function(json){
                 console.log(json);
-                if(json.code === "0"){ //登录校验成功
+                if(json.code === 0){ //登录校验成功
                     // layui.layer.msg("登录成功");
                     //跳转url
-                    window.location.href=json.redirect_url;
+                    window.location.replace(json.redirect_url);
                 }else{
                     layui.layer.msg(json.message);
                 }

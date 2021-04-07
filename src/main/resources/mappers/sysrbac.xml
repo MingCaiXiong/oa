@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nodemapper">
+    <select id="selectNodeByUserId" parameterType="long" resultType="top.xiongmingcai.oa.entity.Node">
+        select distinct sn.*
+
+        from sys_role_user sru,
+             sys_role_node srn,
+             sys_node sn
+        where  srn.node_id = sn.node_id
+          and sru.role_id = srn.role_id and user_id = #{value}
+        order by sn.node_code;
+
+    </select>
+</mapper>
