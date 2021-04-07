@@ -35,40 +35,27 @@
         <div class="layui-side-scroll">
             <!--可折叠导航栏-->
             <ul class="layui-nav layui-nav-tree">
-                <!--父节点-->
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:void(0)">模块1</a>
-                    <dl class="layui-nav-child module" data-node-id="1"></dl>
-                </li>
-                <!--子节点-->
-                <dd class="function" data-parent-id="1">
-                    <a href="javascript:void(0)" target="ifmMain">功能1</a>
-                </dd>
-                <dd class="function" data-parent-id="1">
-                    <a href="javascript:void(0)" target="ifmMain">功能2</a>
-                </dd>
-                <dd class="function" data-parent-id="1">
-                    <a href="javascript:void(0)" target="ifmMain">功能3</a>
-                </dd>
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:void(0)">模块2</a>
-                    <dl class="layui-nav-child module" data-node-id="2"></dl>
-                </li>
-                <dd class="function" data-parent-id="2">
-                    <a href="javascript:void(0)" target="ifmMain">功能3</a>
-                </dd>
-                <dd class="function" data-parent-id="2">
-                    <a href="javascript:void(0)" target="ifmMain">功能4</a>
-                </dd>
-                <dd class="function" data-parent-id="2">
-                    <a href="javascript:void(0)" target="ifmMain">功能5</a>
-                </dd>
+                <#list node_list as item >
+                    <!--父节点-->
+                    <#if item.nodeType ==1>
+                        <li class="layui-nav-item layui-nav-itemed">
+                            <a href="javascript:void(0)">${item.nodeName}</a>
+                            <dl class="layui-nav-child module" data-node-id="${item.nodeType}"></dl>
+                        </li>
+                    </#if>
+                    <#if item.nodeType ==2>
+                        <!--子节点-->
+                        <dd class="function" data-parent-id="${item.parentId}">
+                            <a href="javascript:void(0)" target="ifmMain">${item.nodeName}</a>
+                        </dd>
+                    </#if>
+                </#list>
             </ul>
         </div>
     </aside>
     <!--主体部分采用iframe嵌入其他页面-->
-    <div class="layui-body" style="overflow-y: hidden">
-        <iframe name="ifmMain" style="border: 0px;width: 100%;height: 100%"></iframe>
+    <div class="layui-body" style="overflow-y: hidden;">
+        <iframe name="ifmMain" style="border: 0!important;width: 100%;height: 100%"></iframe>
     </div>
     <!--版权信息-->
     <div class="layui-footer">
