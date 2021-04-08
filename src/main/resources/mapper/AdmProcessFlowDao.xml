@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.xiongmingcai.oa.dao.AdmProcessFlowDao">
+
+    <resultMap id="BaseResultMap" type="top.xiongmingcai.oa.entity.AdmProcessFlow">
+        <!--@Table adm_process_flow-->
+        <result property="processId" column="process_id" jdbcType="INTEGER"/>
+        <result property="formId" column="form_id" jdbcType="INTEGER"/>
+        <result property="operatorId" column="operator_id" jdbcType="INTEGER"/>
+        <result property="action" column="action" jdbcType="VARCHAR"/>
+        <result property="result" column="result" jdbcType="VARCHAR"/>
+        <result property="reason" column="reason" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="auditTime" column="audit_time" jdbcType="TIMESTAMP"/>
+        <result property="orderNo" column="order_no" jdbcType="INTEGER"/>
+        <result property="state" column="state" jdbcType="VARCHAR"/>
+        <result property="isLast" column="is_last" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          process_id, form_id, operator_id, action, result, reason, create_time, audit_time, order_no, state, is_last
+        from oa.adm_process_flow
+        where process_id = #{processId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          process_id, form_id, operator_id, action, result, reason, create_time, audit_time, order_no, state, is_last
+        from oa.adm_process_flow
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          process_id, form_id, operator_id, action, result, reason, create_time, audit_time, order_no, state, is_last
+        from oa.adm_process_flow
+        <where>
+            <if test="processId != null">
+                and process_id = #{processId}
+            </if>
+            <if test="formId != null">
+                and form_id = #{formId}
+            </if>
+            <if test="operatorId != null">
+                and operator_id = #{operatorId}
+            </if>
+            <if test="action != null and action != ''">
+                and action = #{action}
+            </if>
+            <if test="result != null and result != ''">
+                and result = #{result}
+            </if>
+            <if test="reason != null and reason != ''">
+                and reason = #{reason}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="auditTime != null">
+                and audit_time = #{auditTime}
+            </if>
+            <if test="orderNo != null">
+                and order_no = #{orderNo}
+            </if>
+            <if test="state != null and state != ''">
+                and state = #{state}
+            </if>
+            <if test="isLast != null">
+                and is_last = #{isLast}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="processId" useGeneratedKeys="true">
+        insert into oa.adm_process_flow(form_id, operator_id, action, result, reason, create_time, audit_time, order_no, state, is_last)
+        values (#{formId}, #{operatorId}, #{action}, #{result}, #{reason}, #{createTime}, #{auditTime}, #{orderNo}, #{state}, #{isLast})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update oa.adm_process_flow
+        <set>
+            <if test="formId != null">
+                form_id = #{formId},
+            </if>
+            <if test="operatorId != null">
+                operator_id = #{operatorId},
+            </if>
+            <if test="action != null and action != ''">
+                action = #{action},
+            </if>
+            <if test="result != null and result != ''">
+                result = #{result},
+            </if>
+            <if test="reason != null and reason != ''">
+                reason = #{reason},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo},
+            </if>
+            <if test="state != null and state != ''">
+                state = #{state},
+            </if>
+            <if test="isLast != null">
+                is_last = #{isLast},
+            </if>
+        </set>
+        where process_id = #{processId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from oa.adm_process_flow where process_id = #{processId}
+    </delete>
+
+</mapper>

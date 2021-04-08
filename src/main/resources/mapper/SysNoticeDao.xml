@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.xiongmingcai.oa.dao.SysNoticeDao">
+
+    <resultMap id="BaseResultMap" type="top.xiongmingcai.oa.entity.SysNotice">
+        <!--@Table sys_notice-->
+        <result property="noticeId" column="notice_id" jdbcType="INTEGER"/>
+        <result property="receiverId" column="receiver_id" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          notice_id, receiver_id, content, create_time
+        from oa.sys_notice
+        where notice_id = #{noticeId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          notice_id, receiver_id, content, create_time
+        from oa.sys_notice
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          notice_id, receiver_id, content, create_time
+        from oa.sys_notice
+        <where>
+            <if test="noticeId != null">
+                and notice_id = #{noticeId}
+            </if>
+            <if test="receiverId != null">
+                and receiver_id = #{receiverId}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="noticeId" useGeneratedKeys="true">
+        insert into oa.sys_notice(receiver_id, content, create_time)
+        values (#{receiverId}, #{content}, #{createTime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update oa.sys_notice
+        <set>
+            <if test="receiverId != null">
+                receiver_id = #{receiverId},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+        </set>
+        where notice_id = #{noticeId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from oa.sys_notice where notice_id = #{noticeId}
+    </delete>
+
+</mapper>

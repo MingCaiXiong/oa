@@ -14,7 +14,7 @@
             <transactionManager type="JDBC"/>
             <dataSource type="top.xiongmingcai.oa.datasource.DruidDataSourceFactory">
                 <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/oa"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/oa?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=Asia/Shanghai"/>
                 <property name="username" value="root"/>
                 <property name="password" value="NewPassword"/>
                 <!--连接池初始化连接数-->
@@ -27,8 +27,11 @@
     <mappers>
         <mapper resource="mappers/user.xml"/>
         <mapper resource="mappers/sysrbac.xml"/>
-        <mapper resource="mappers/employee.xml"/>
         <mapper resource="mappers/depaetment.xml"/>
+        <mapper resource="mapper/AdmEmployeeDao.xml"/>
+        <mapper resource="mapper/AdmLeaveFormDao.xml"/>
+        <mapper resource="mapper/SysNoticeDao.xml"/>
+        <mapper resource="mapper/AdmProcessFlowDao.xml"/>
         <!-- <mapper class="top.xiongmingcai.dao.StudentDao"/>-->
         <!-- <package name="top.xiongmingcai.dao"/> -->
     </mappers>

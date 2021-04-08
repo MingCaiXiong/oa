@@ -1,0 +1,41 @@
+package top.xiongmingcai.oa.service;
+
+import junit.framework.TestCase;
+import top.xiongmingcai.oa.entity.AdmLeaveForm;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+public class AdmLeaveFormServiceTest extends TestCase {
+    public void testCreateLeaveForm() {
+        AdmLeaveFormService savedForm = new AdmLeaveFormService();
+        Calendar calendar = new GregorianCalendar();
+
+        Date endTime = null;
+        Date stateTime = null;
+
+
+        stateTime = new Date();
+        calendar.setTime(stateTime);
+        calendar.setTime(stateTime);
+        calendar.add(Calendar.DATE, 3);
+
+
+        endTime = calendar.getTime();
+
+        AdmLeaveForm form = new AdmLeaveForm();
+        form.setEmployeeId(10L);
+        form.setStartTime(stateTime);
+        form.setEndTime(endTime);
+        form.setReason("回家收包谷");
+        form.setFormType(1);
+        form.setReason("市场部员工请假单 72 小时");
+        form.setCreateTime(new Date());
+
+
+        AdmLeaveForm savedFormLeaveForm = savedForm.createLeaveForm(form);
+        System.out.println("savedFormLeaveForm.getFormId() = " + savedFormLeaveForm.getFormId());
+    }
+}

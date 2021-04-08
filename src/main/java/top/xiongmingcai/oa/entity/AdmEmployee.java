@@ -3,13 +3,13 @@ package top.xiongmingcai.oa.entity;
 import java.io.Serializable;
 
 /**
- * (Employee)实体类
+ * (AdmEmployee)实体类
  *
  * @author makejava
- * @since 2021-04-07 12:05:00
+ * @since 2021-04-08 17:39:19
  */
-public class Employee implements Serializable {
-    private static final long serialVersionUID = 851422010427790764L;
+public class AdmEmployee implements Serializable {
+    private static final long serialVersionUID = -86923352454701699L;
     
     private Long employeeId;
     

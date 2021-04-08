@@ -1,11 +1,11 @@
 package top.xiongmingcai.oa.controller;
 
+import top.xiongmingcai.oa.entity.AdmEmployee;
 import top.xiongmingcai.oa.entity.Department;
-import top.xiongmingcai.oa.entity.Employee;
 import top.xiongmingcai.oa.entity.Node;
 import top.xiongmingcai.oa.entity.User;
+import top.xiongmingcai.oa.service.AdmEmployeeService;
 import top.xiongmingcai.oa.service.DepartmentService;
-import top.xiongmingcai.oa.service.EmployeeService;
 import top.xiongmingcai.oa.service.UserService;
 
 import javax.servlet.*;
@@ -17,7 +17,7 @@ import java.util.List;
 @WebServlet(name = "IndexServlet", urlPatterns = "/index")
 public class IndexServlet extends HttpServlet {
     private UserService userService = new UserService();
-    private EmployeeService employeeService = new EmployeeService();
+    private AdmEmployeeService employeeService = new AdmEmployeeService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,7 +30,7 @@ public class IndexServlet extends HttpServlet {
         User user = (User) session.getAttribute("login_user");
         //获取员工信息
         Long employeeId = user.getEmployeeId();
-        Employee employee = employeeService.queryById(employeeId);
+        AdmEmployee employee = employeeService.queryById(employeeId);
         //获取员工对应部门
         Long departmentId = employee.getDepartmentId();
         Department department = new DepartmentService().queryById(departmentId);
