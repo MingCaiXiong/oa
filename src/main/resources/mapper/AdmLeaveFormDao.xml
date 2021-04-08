@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.xiongmingcai.oa.dao.AdmLeaveFormDao">
+
+    <resultMap id="BaseResultMap" type="top.xiongmingcai.oa.entity.AdmLeaveForm">
+        <!--@Table adm_leave_form-->
+        <result property="formId" column="form_id" jdbcType="INTEGER"/>
+        <result property="employeeId" column="employee_id" jdbcType="INTEGER"/>
+        <result property="formType" column="form_type" jdbcType="INTEGER"/>
+        <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+        <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+        <result property="reason" column="reason" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="state" column="state" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          form_id, employee_id, form_type, start_time, end_time, reason, create_time, state
+        from oa.adm_leave_form
+        where form_id = #{formId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          form_id, employee_id, form_type, start_time, end_time, reason, create_time, state
+        from oa.adm_leave_form
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          form_id, employee_id, form_type, start_time, end_time, reason, create_time, state
+        from oa.adm_leave_form
+        <where>
+            <if test="formId != null">
+                and form_id = #{formId}
+            </if>
+            <if test="employeeId != null">
+                and employee_id = #{employeeId}
+            </if>
+            <if test="formType != null">
+                and form_type = #{formType}
+            </if>
+            <if test="startTime != null">
+                and start_time = #{startTime}
+            </if>
+            <if test="endTime != null">
+                and end_time = #{endTime}
+            </if>
+            <if test="reason != null and reason != ''">
+                and reason = #{reason}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="state != null and state != ''">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="formId" useGeneratedKeys="true">
+        insert into oa.adm_leave_form(employee_id, form_type, start_time, end_time, reason, create_time, state)
+        values (#{employeeId}, #{formType}, #{startTime}, #{endTime}, #{reason}, #{createTime}, #{state})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update oa.adm_leave_form
+        <set>
+            <if test="employeeId != null">
+                employee_id = #{employeeId},
+            </if>
+            <if test="formType != null">
+                form_type = #{formType},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="reason != null and reason != ''">
+                reason = #{reason},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="state != null and state != ''">
+                state = #{state},
+            </if>
+        </set>
+        where form_id = #{formId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from oa.adm_leave_form where form_id = #{formId}
+    </delete>
+
+</mapper>
