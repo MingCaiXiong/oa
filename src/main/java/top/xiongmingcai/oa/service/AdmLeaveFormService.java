@@ -9,6 +9,8 @@ import top.xiongmingcai.oa.entity.AdmProcessFlow;
 import top.xiongmingcai.oa.utils.MyBatisUtils;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * (AdmLeaveForm)表服务
@@ -139,5 +141,10 @@ public class AdmLeaveFormService {
 
         return admLeaveForm;
     }
-
+    public List<Map> getLeaveFormList(String pfState,Long operatorId){
+        return (List<Map>) MyBatisUtils.executrQuery(sqlSession -> {
+            AdmLeaveFormDao mapper = sqlSession.getMapper(AdmLeaveFormDao.class);
+            return mapper.queryProcessByState(pfState, operatorId);
+        });
+    }
 }

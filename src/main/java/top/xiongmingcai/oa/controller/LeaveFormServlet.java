@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet(name = "LeaveFormServlet", value = "/leave/*")
@@ -36,6 +37,8 @@ public class LeaveFormServlet extends HttpServlet {
         String methodName = url.substring(url.lastIndexOf("/") + 1);
         if (methodName.equals("create")) {
             this.create(request, response);
+        }else if (methodName.equals("list")){
+            this.getLeaveForList(request,response);
         }
 
     }
@@ -74,5 +77,18 @@ public class LeaveFormServlet extends HttpServlet {
         String json = JSON.toJSONString(result);
         // 将json字符串向客户端返回
         response.getWriter().println(json);
+    }
+
+    private void getLeaveForList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User login_user = (User) request.getSession().getAttribute("login_user");
+        List<Map> formList = leaveFormService.getLeaveFormList("process", login_user.getEmployeeId());
+        Map<String, Object> result = new HashMap<>();
+        result.put("code","0");
+        result.put("message","");
+        result.put("count",formList.size());
+        result.put("data",formList);
+        String json = JSON.toJSONString(result);
+        response.getWriter().println(json);
+
     }
 }
