@@ -103,4 +103,18 @@
         delete from oa.adm_leave_form where form_id = #{formId}
     </delete>
 
+    <select id="queryProcessByState" parameterType="java.util.Map" resultType="java.util.Map">
+            select *
+        from adm_process_flow pf
+           , adm_leave_form lf
+           , adm_employee emp
+           , adm_department dep
+        where pf.state = #{pf_state}
+          and pf.operator_id= #{pf_operator_id}
+          and pf.form_id = lf.form_id
+
+          and lf.employee_id = emp.employee_id
+          and emp.department_id = dep.department_id
+        ;
+    </select>
 </mapper>

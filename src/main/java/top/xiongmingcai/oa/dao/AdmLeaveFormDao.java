@@ -2,7 +2,9 @@ package top.xiongmingcai.oa.dao;
 
 import top.xiongmingcai.oa.entity.AdmLeaveForm;
 import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * (AdmLeaveForm)表数据库访问层
@@ -24,7 +26,7 @@ public interface AdmLeaveFormDao {
      * 查询指定行数据
      *
      * @param offset 查询起始位置
-     * @param limit 查询条数
+     * @param limit  查询条数
      * @return 对象列表
      */
     List<AdmLeaveForm> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
@@ -62,4 +64,12 @@ public interface AdmLeaveFormDao {
      */
     int deleteById(Long formId);
 
+    /**
+     * 按state查询请假条流程数据
+     *
+     * @param pfState 请假条流程状态
+     * @param operatorId 就经办人
+     * @return
+     */
+    List<Map> queryProcessByState(@Param("pf_state") String pfState, @Param("pf_operator_id") Long operatorId);
 }

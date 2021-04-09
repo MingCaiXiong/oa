@@ -46,7 +46,7 @@
                     <#if item.nodeType ==2>
                         <!--子节点-->
                         <dd class="function" data-parent-id="${item.parentId}">
-                            <a href="javascript:void(0)" target="ifmMain">${item.nodeName}</a>
+                            <a href="${item.url}" target="ifmMain">${item.nodeName}</a>
                         </dd>
                     </#if>
                 </#list>

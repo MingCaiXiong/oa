@@ -30,24 +30,24 @@ public class AdmLeaveFormService {
     private final Integer manager = 7;
 
 
-    public AdmLeaveForm createLeaveForm(AdmLeaveForm from) {
+    public AdmLeaveForm createLeaveForm(AdmLeaveForm form) {
         AdmLeaveForm admLeaveForm = (AdmLeaveForm) MyBatisUtils.executrUpdate(sqlSession -> {
             //1)  持久化form表单数据，8级以下员工表单状态为 processing，8级（总经理）状态为 approved
             AdmEmployeeDao employeeDao = sqlSession.getMapper(AdmEmployeeDao.class);
-            AdmEmployee employee = employeeDao.queryById(from.getEmployeeId());
+            AdmEmployee employee = employeeDao.queryById(form.getEmployeeId());
             Integer level = employee.getLevel();
             if (level == boss) {
-                from.setState(approved);
+                form.setState(approved);
             } else {
-                from.setState(process);
+                form.setState(process);
             }
-
+            form.setCreateTime(new Date());
             AdmLeaveFormDao leaveFormDao = sqlSession.getMapper(AdmLeaveFormDao.class);
-            leaveFormDao.insert(from);
+            leaveFormDao.insert(form);
             // 2) 增加第一条流程数据，说明表单已提交，状态为 complete
             AdmProcessFlowDao processFlowDao = sqlSession.getMapper(AdmProcessFlowDao.class);
             AdmProcessFlow flow1 = new AdmProcessFlow();
-            flow1.setFormId(from.getFormId());
+            flow1.setFormId(form.getFormId());
             flow1.setOperatorId(employee.getEmployeeId());
             //请假条:过程 apply-申请  audit-审批
             flow1.setAction(apply);
@@ -63,15 +63,15 @@ public class AdmLeaveFormService {
             if (level < manager) {
                 AdmEmployee leadership = employeeDao.queryleader(employee); //获得上级领导
                 AdmProcessFlow flow2 = new AdmProcessFlow();
-                flow2.setFormId(from.getFormId());
+                flow2.setFormId(form.getFormId());
                 flow2.setOperatorId(leadership.getEmployeeId());//经办人
                 flow2.setAction(audit);
                 flow2.setCreateTime(new Date());
                 flow2.setOrderNo(2);
                 //请假条状态: ready-准备 process-正在处理 complete-处理完成 cancel-取消
                 flow2.setState(process);//正在处理
-                Date endTime = from.getEndTime();
-                Date startTime = from.getStartTime();
+                Date endTime = form.getEndTime();
+                Date startTime = form.getStartTime();
                 long diff = endTime.getTime() - startTime.getTime();
                 float hours = diff / (60 * 60 * 1000) * 1f;
 
@@ -90,7 +90,7 @@ public class AdmLeaveFormService {
                     //处理总经理审批逻辑
                     AdmEmployee boss = employeeDao.queryleader(leadership); //获得上级领导
                     AdmProcessFlow flow3 = new AdmProcessFlow();
-                    flow3.setFormId(from.getFormId());
+                    flow3.setFormId(form.getFormId());
                     flow3.setOperatorId(boss.getEmployeeId());//登记经办人
                     //请假条:过程 apply-申请  audit-审批
                     flow3.setAction(apply);//上级部门经理审批后方可审批
@@ -107,7 +107,7 @@ public class AdmLeaveFormService {
                 //3.2)  7级员工，生成总经理审批任务
                 AdmEmployee generalManager = employeeDao.queryleader(employee);
                 AdmProcessFlow flow = new AdmProcessFlow();
-                flow.setFormId(from.getFormId());
+                flow.setFormId(form.getFormId());
                 flow.setOperatorId(generalManager.getEmployeeId());
                 flow.setAction(audit);
                 flow.setCreateTime(new Date());
@@ -119,7 +119,7 @@ public class AdmLeaveFormService {
             } else if (level == boss) {
                 //3.3)  8级员工，生成总经理审批任务，系统自动通过
                 AdmProcessFlow flow = new AdmProcessFlow();
-                flow.setFormId(from.getFormId());
+                flow.setFormId(form.getFormId());
                 flow.setOperatorId(employee.getEmployeeId());
                 flow.setAction(audit);
                 flow.setResult(approved);//审批意见
@@ -134,7 +134,7 @@ public class AdmLeaveFormService {
             }
 
 
-            return from;
+            return form;
         });
 
         return admLeaveForm;

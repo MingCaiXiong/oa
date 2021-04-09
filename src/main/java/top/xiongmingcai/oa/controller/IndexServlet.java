@@ -37,9 +37,9 @@ public class IndexServlet extends HttpServlet {
 
         //获取登录用户可用模块列表
         List<Node> nodeslist = userService.selectNodeByUserId(user.getUserId());
-        request.setAttribute("node_list", nodeslist);
-        request.setAttribute("current_employee", employee);
-        request.setAttribute("current_department", department);
+        session.setAttribute("node_list", nodeslist);
+        session.setAttribute("current_employee", employee);
+        session.setAttribute("current_department", department);
         request.getRequestDispatcher("/index.ftl").forward(request, response);
     }
 }

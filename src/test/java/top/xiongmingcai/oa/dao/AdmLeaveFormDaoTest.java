@@ -5,9 +5,7 @@ import top.xiongmingcai.oa.entity.AdmLeaveForm;
 import top.xiongmingcai.oa.utils.MyBatisUtils;
 
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 public class AdmLeaveFormDaoTest extends TestCase {
     /*
@@ -51,5 +49,15 @@ public class AdmLeaveFormDaoTest extends TestCase {
             return mapper.insert(form);
         });
         System.out.println("更新多少行 = " + howManyRowsToUpdate);
+    }
+
+    public void testQueryProcessByState() {
+       MyBatisUtils.executrQuery(sqlSession -> {
+            AdmLeaveFormDao mapper = sqlSession.getMapper(AdmLeaveFormDao.class);
+           List<Map> pocoess = mapper.queryProcessByState("process", 6L);
+           System.out.println("pocoess = " + pocoess);
+           return pocoess;
+        });
+
     }
 }

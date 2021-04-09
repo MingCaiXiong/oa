@@ -1,5 +1,5 @@
 [#ftl]
 [#-- @implicitly included --]
 [#-- @ftlvariable name="node_list" type="java.util.List<top.xiongmingcai.oa.entity.Node>" --]
-[#-- @ftlvariable name="current_employee" type="top.xiongmingcai.oa.entity.Employee" --]
+[#-- @ftlvariable name="current_employee" type="top.xiongmingcai.oa.entity.AdmEmployee" --]
 [#-- @ftlvariable name="current_department" type="top.xiongmingcai.oa.entity.Department" --]
