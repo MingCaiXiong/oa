@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace=".dao.SysNoticeDao">
+<mapper namespace="top.xiongmingcai.oa.dao.SysNoticeDao">
 
-    <resultMap id="BaseResultMap" type=".entity.SysNotice">
+    <resultMap id="BaseResultMap" type="top.xiongmingcai.oa.entity.SysNotice">
         <!--@Table sys_notice-->
         <result property="noticeId" column="notice_id" jdbcType="INTEGER"/>
         <result property="receiverId" column="receiver_id" jdbcType="INTEGER"/>
@@ -26,6 +26,14 @@
         limit #{offset}, #{limit}
     </select>
 
+    <!--查询指定行数据-->
+    <select id="selectByReceiverId" resultMap="BaseResultMap">
+        select
+            notice_id, receiver_id, content, create_time
+        from oa.sys_notice
+        where receiver_id = #{receiverId}
+        limit 100;
+    </select>
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select

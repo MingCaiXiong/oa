@@ -7,10 +7,10 @@ import java.io.Serializable;
  * (SysNotice)实体类
  *
  * @author makejava
- * @since 2021-04-10 18:01:07
+ * @since 2021-04-10 19:11:15
  */
 public class SysNotice implements Serializable {
-    private static final long serialVersionUID = 450775096842428210L;
+    private static final long serialVersionUID = 500917894975566426L;
     
     private Long noticeId;
     

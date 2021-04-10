@@ -8,7 +8,7 @@ import java.util.List;
  * (SysNotice)表数据库访问层
  *
  * @author makejava
- * @since 2021-04-10 18:01:08
+ * @since 2021-04-10 19:11:16
  */
 public interface SysNoticeDao {
 
@@ -28,6 +28,15 @@ public interface SysNoticeDao {
      * @return 对象列表
      */
     List<SysNotice> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+
+    /**
+     * 查询指定行数据
+     *
+     * @param receiverId 通知人id
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    List<SysNotice> selectByReceiverId(@Param("receiverId") Long receiverId);
 
 
     /**

@@ -1,6 +1,10 @@
 package top.xiongmingcai.oa.service;
 
+import com.alibaba.fastjson.JSON;
+import top.xiongmingcai.oa.dao.SysNoticeDao;
 import top.xiongmingcai.oa.entity.SysNotice;
+import top.xiongmingcai.oa.utils.MyBatisUtils;
+
 import java.util.List;
 
 /**
@@ -21,6 +25,13 @@ public class SysNoticeService {
         return null;
     };
 
+
+    public List<?> selectByReceiverId(Long employeeId){
+        return (List<?>)MyBatisUtils.executrQuery(sqlSession -> {
+            SysNoticeDao noticeDao = sqlSession.getMapper(SysNoticeDao.class);
+        return  noticeDao.selectByReceiverId(1L);
+        });
+    }
     /**
      * 查询多条数据
      *

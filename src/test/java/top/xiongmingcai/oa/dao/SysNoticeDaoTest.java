@@ -1,10 +1,12 @@
 package top.xiongmingcai.oa.dao;
 
+import com.alibaba.fastjson.JSON;
 import junit.framework.TestCase;
 import top.xiongmingcai.oa.entity.SysNotice;
 import top.xiongmingcai.oa.utils.MyBatisUtils;
 
 import java.util.Date;
+import java.util.List;
 
 
 public class SysNoticeDaoTest extends TestCase {
@@ -27,5 +29,15 @@ public class SysNoticeDaoTest extends TestCase {
             return mapper.insert(notice);
         });
         System.out.println("更新多少行 = " + howManyRowsToUpdate);
+    }
+
+    public void testSelectByReceiverId() {
+        MyBatisUtils.executrQuery(sqlSession -> {
+            SysNoticeDao noticeDao = sqlSession.getMapper(SysNoticeDao.class);
+            List<SysNotice> sysNotices = noticeDao.selectByReceiverId(1L);
+            String jsonString = JSON.toJSONString(sysNotices);
+            System.out.println("jsonString = " + jsonString);
+            return null;
+        });
     }
 }

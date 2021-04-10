@@ -1,6 +1,5 @@
 package top.xiongmingcai.oa.service;
 
-import com.mysql.cj.protocol.x.Notice;
 import top.xiongmingcai.oa.dao.AdmEmployeeDao;
 import top.xiongmingcai.oa.dao.AdmLeaveFormDao;
 import top.xiongmingcai.oa.dao.AdmProcessFlowDao;
@@ -12,7 +11,6 @@ import top.xiongmingcai.oa.entity.SysNotice;
 import top.xiongmingcai.oa.service.exception.BusinessException;
 import top.xiongmingcai.oa.utils.MyBatisUtils;
 
-import javax.management.Notification;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -249,7 +247,7 @@ public class AdmLeaveFormService {
                     //4.如果当前任务不是最后一个节点且审批驳回,则后续所有任务状态变为cancel,请假单状态变为refused
                     for(AdmProcessFlow p:readyList){
                         p.setState("cancel");
-                        processFlowDao.update(p);
+                        processFlowsDao.update(p);
                     }
                     form.setState("refused");
                     leaveFormDao.update(form);
