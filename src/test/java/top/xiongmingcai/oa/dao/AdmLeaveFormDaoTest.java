@@ -1,5 +1,6 @@
 package top.xiongmingcai.oa.dao;
 
+import com.alibaba.fastjson.JSON;
 import junit.framework.TestCase;
 import top.xiongmingcai.oa.entity.AdmLeaveForm;
 import top.xiongmingcai.oa.utils.MyBatisUtils;
@@ -23,7 +24,7 @@ public class AdmLeaveFormDaoTest extends TestCase {
     ]*/
     public void testInsert() {
 
-        Integer howManyRowsToUpdate = (int)MyBatisUtils.executrUpdate(sqlSession -> {
+        Integer howManyRowsToUpdate = (int) MyBatisUtils.executrUpdate(sqlSession -> {
             AdmLeaveFormDao mapper = sqlSession.getMapper(AdmLeaveFormDao.class);
             AdmLeaveForm form = new AdmLeaveForm();
             form.setEmployeeId(4L);
@@ -52,11 +53,13 @@ public class AdmLeaveFormDaoTest extends TestCase {
     }
 
     public void testQueryProcessByState() {
-       MyBatisUtils.executrQuery(sqlSession -> {
+        MyBatisUtils.executrQuery(sqlSession -> {
             AdmLeaveFormDao mapper = sqlSession.getMapper(AdmLeaveFormDao.class);
-           List<Map> pocoess = mapper.queryProcessByState("process", 6L);
-           System.out.println("pocoess = " + pocoess);
-           return pocoess;
+            List<Map> pocoess = mapper.queryProcessByState("process", 2L);
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.println("pocoess = " + JSON.toJSONString(pocoess));
+            System.out.println("---------------------------------------------------------------------------");
+            return null;
         });
 
     }

@@ -37,10 +37,37 @@ public class LeaveFormServlet extends HttpServlet {
         String methodName = url.substring(url.lastIndexOf("/") + 1);
         if (methodName.equals("create")) {
             this.create(request, response);
-        }else if (methodName.equals("list")){
-            this.getLeaveForList(request,response);
+        } else if (methodName.equals("list")) {
+            this.getLeaveForList(request, response);
+        } else if (methodName.equals("audit")) {
+            this.audit(request, response);
+
         }
 
+    }
+
+    private void audit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String formId = request.getParameter("formId");
+        String result = request.getParameter("result");
+        String reason = request.getParameter("reason");
+        Map<String, String> mapResult = new HashMap<>();
+
+        try {
+            User login_user = (User) request.getSession().getAttribute("login_user");
+            Long employeeId = login_user.getEmployeeId();
+            long l = Long.parseLong(formId);
+            leaveFormService.audit(l, employeeId, result, reason);
+            mapResult.put("code", "0");
+            mapResult.put("message", "success");
+
+        } catch (Exception e) {
+            logger.error("请假审批异常", e);
+            mapResult.put("code", e.getClass().getSimpleName());
+            mapResult.put("message", e.getMessage());
+        }
+        String json = JSON.toJSONString(mapResult);
+        // 将json字符串向客户端返回
+        response.getWriter().println(json);
     }
 
     private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -83,10 +110,10 @@ public class LeaveFormServlet extends HttpServlet {
         User login_user = (User) request.getSession().getAttribute("login_user");
         List<Map> formList = leaveFormService.getLeaveFormList("process", login_user.getEmployeeId());
         Map<String, Object> result = new HashMap<>();
-        result.put("code","0");
-        result.put("message","");
-        result.put("count",formList.size());
-        result.put("data",formList);
+        result.put("code", "0");
+        result.put("message", "");
+        result.put("count", formList.size());
+        result.put("data", formList);
         String json = JSON.toJSONString(result);
         response.getWriter().println(json);
 

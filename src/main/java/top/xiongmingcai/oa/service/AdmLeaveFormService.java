@@ -193,12 +193,12 @@ public class AdmLeaveFormService {
                 System.out.println("更新了多少行 = " + update);
             }
             AdmLeaveFormDao leaveFormDao = sqlSession.getMapper(AdmLeaveFormDao.class);
-            AdmLeaveForm leaveForm = leaveFormDao.queryById(formId);
+            AdmLeaveForm form = leaveFormDao.queryById(formId);
             //2.如果当前任务是最后一个节点,代表流程结束,更新请假单状态为对应的approved/refused
             if (processFlowIndex.getIsLast() == 1) {
 //                approved | refused
-                leaveForm.setState(presult);
-                leaveFormDao.update(leaveForm);
+                form.setState(presult);
+                leaveFormDao.update(form);
             } else {
                 //        3.如果当前任务不是最后一个节点且审批通过,那下一个节点的状态从ready变为process
                 List<AdmProcessFlow> readyList = admProcessFlows.stream()
@@ -214,7 +214,8 @@ public class AdmLeaveFormService {
                         item.setState("cancel");
                         ProcessFlowDao.update(item);
                     }
-                    leaveForm.setState("refused");
+                    form.setState("refused");
+                    leaveFormDao.update(form);
                 }
 
             }

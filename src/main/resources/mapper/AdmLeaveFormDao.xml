@@ -104,7 +104,7 @@
     </delete>
 
     <select id="queryProcessByState" parameterType="java.util.Map" resultType="java.util.Map">
-            select *
+        select lf.*, emp.* ,dep.*,pf.*
         from adm_process_flow pf
            , adm_leave_form lf
            , adm_employee emp
