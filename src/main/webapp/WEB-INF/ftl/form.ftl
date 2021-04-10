@@ -90,7 +90,7 @@
 </div>
 
 <script src="/resources/layui/layui.all.js"></script>
-<script src="http://127.0.0.1:8081/sweetalert2.all.min.js"></script>
+<script src="/resources/sweetalert2.all.min.js"></script>
 
 <script>
 

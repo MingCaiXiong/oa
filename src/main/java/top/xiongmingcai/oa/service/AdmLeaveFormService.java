@@ -40,6 +40,7 @@ public class AdmLeaveFormService {
             } else {
                 form.setState("processing");
             }
+            form.setCreateTime(new Date());
             AdmLeaveFormDao leaveFormDao = sqlSession.getMapper(AdmLeaveFormDao.class);
             leaveFormDao.insert(form);
             //2.增加第一条流程数据,说明表单已提交,状态为complete

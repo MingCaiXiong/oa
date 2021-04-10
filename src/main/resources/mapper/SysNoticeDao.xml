@@ -32,6 +32,7 @@
             notice_id, receiver_id, content, create_time
         from oa.sys_notice
         where receiver_id = #{receiverId}
+        order by create_time desc
         limit 100;
     </select>
     <!--通过实体作为筛选条件查询-->
