@@ -1,6 +1,5 @@
 package top.xiongmingcai.oa.dao;
 
-import org.apache.ibatis.annotations.Mapper;
 import top.xiongmingcai.oa.entity.SysNotice;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
  * (SysNotice)表数据库访问层
  *
  * @author makejava
- * @since 2021-04-08 12:18:16
+ * @since 2021-04-10 18:01:08
  */
 public interface SysNoticeDao {
 

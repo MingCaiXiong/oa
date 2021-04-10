@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.xiongmingcai.oa.dao.SysNoticeDao">
+<mapper namespace=".dao.SysNoticeDao">
 
-    <resultMap id="BaseResultMap" type="top.xiongmingcai.oa.entity.SysNotice">
+    <resultMap id="BaseResultMap" type=".entity.SysNotice">
         <!--@Table sys_notice-->
         <result property="noticeId" column="notice_id" jdbcType="INTEGER"/>
         <result property="receiverId" column="receiver_id" jdbcType="INTEGER"/>
