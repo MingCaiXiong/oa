@@ -124,4 +124,7 @@
         delete from oa.adm_process_flow where process_id = #{processId}
     </delete>
 
+    <select id="selectByFormId" parameterType="Long" resultMap="BaseResultMap">
+        select  * from oa.adm_process_flow where form_id  = #{value} order by order_no
+    </select>
 </mapper>

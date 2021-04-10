@@ -1,12 +1,11 @@
 package top.xiongmingcai.oa.service;
 
 import junit.framework.TestCase;
+import org.junit.Test;
 import top.xiongmingcai.oa.entity.AdmLeaveForm;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 public class AdmLeaveFormServiceTest extends TestCase {
     /**
@@ -72,5 +71,16 @@ public class AdmLeaveFormServiceTest extends TestCase {
 
         AdmLeaveForm savedFormLeaveForm = savedForm.createLeaveForm(form);
         System.out.println("savedFormLeaveForm.getFormId() = " + savedFormLeaveForm.getFormId());
+    }
+    @Test
+    public void testgetLeaveFormList(){
+        AdmLeaveFormService savedForm = new AdmLeaveFormService();
+        List<Map> leaveFormList = savedForm.getLeaveFormList("process", 6L);
+        System.out.println("leaveFormList = " + leaveFormList);
+    }
+
+    public void testAudit() {
+        AdmLeaveFormService leaveFormService = new AdmLeaveFormService();
+        leaveFormService.audit(31L,2L,"approved","祝早日康复!");
     }
 }

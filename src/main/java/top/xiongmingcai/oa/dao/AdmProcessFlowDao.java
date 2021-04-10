@@ -62,4 +62,6 @@ public interface AdmProcessFlowDao {
      */
     int deleteById(Long processId);
 
+    List<AdmProcessFlow> selectByFormId(Long formId);
+
 }

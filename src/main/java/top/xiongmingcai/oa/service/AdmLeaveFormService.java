@@ -6,11 +6,13 @@ import top.xiongmingcai.oa.dao.AdmProcessFlowDao;
 import top.xiongmingcai.oa.entity.AdmEmployee;
 import top.xiongmingcai.oa.entity.AdmLeaveForm;
 import top.xiongmingcai.oa.entity.AdmProcessFlow;
+import top.xiongmingcai.oa.service.exception.BusinessException;
 import top.xiongmingcai.oa.utils.MyBatisUtils;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * (AdmLeaveForm)表服务
@@ -28,7 +30,7 @@ public class AdmLeaveFormService {
     // apply-申请  audit-审批
     private String apply = "apply";
     private String audit = "audit";
-    private final Integer boss = 8;
+    private final Integer BOSS = 8;
     private final Integer manager = 7;
 
 
@@ -38,7 +40,7 @@ public class AdmLeaveFormService {
             AdmEmployeeDao employeeDao = sqlSession.getMapper(AdmEmployeeDao.class);
             AdmEmployee employee = employeeDao.queryById(form.getEmployeeId());
             Integer level = employee.getLevel();
-            if (level == boss) {
+            if (level == BOSS) {
                 form.setState(approved);
             } else {
                 form.setState(process);
@@ -118,7 +120,7 @@ public class AdmLeaveFormService {
                 flow.setOrderNo(2);//这是任务中第二节点
                 flow.setIsLast(1);
                 processFlowDao.insert(flow);
-            } else if (level == boss) {
+            } else if (level == BOSS) {
                 //3.3)  8级员工，生成总经理审批任务，系统自动通过
                 AdmProcessFlow flow = new AdmProcessFlow();
                 flow.setFormId(form.getFormId());
@@ -141,10 +143,83 @@ public class AdmLeaveFormService {
 
         return admLeaveForm;
     }
-    public List<Map> getLeaveFormList(String pfState,Long operatorId){
+
+    /**
+     * 返回需要审批的请假条列表
+     *
+     * @param pfState    状态
+     * @param operatorId 审核人
+     * @return
+     */
+    public List<Map> getLeaveFormList(String pfState, Long operatorId) {
         return (List<Map>) MyBatisUtils.executrQuery(sqlSession -> {
             AdmLeaveFormDao mapper = sqlSession.getMapper(AdmLeaveFormDao.class);
             return mapper.queryProcessByState(pfState, operatorId);
         });
+    }
+
+    /**
+     * @param formId
+     * @param operatorId 经办人Id
+     * @param presult    approved-同意 refused-驳回
+     * @param reason     审批意见
+     */
+    public void audit(Long formId, Long operatorId, String presult, String reason) {
+//        1.无论同意/驳回,当前任务状态变更为complete
+        MyBatisUtils.executrUpdate(sqlSession -> {
+            AdmProcessFlowDao ProcessFlowDao = sqlSession.getMapper(AdmProcessFlowDao.class);
+            AdmProcessFlow query = new AdmProcessFlow();
+            query.setFormId(formId);
+            List<AdmProcessFlow> admProcessFlows = ProcessFlowDao.queryAll(query);
+
+            if (admProcessFlows.size() == 0) {
+                throw new BusinessException("PF001", "无效的审批流程");
+            }
+            //获取任务状态为 process 流程节点
+            List<AdmProcessFlow> processList = admProcessFlows
+                    .stream()
+                    .filter(p -> p.getOperatorId().equals(operatorId) && p.getState().equals("process"))
+                    .collect(Collectors.toList());
+
+            AdmProcessFlow processFlowIndex;
+            if (processList.size() == 0) {
+                throw new BusinessException("PF002", "未找到待处理的任务");
+            } else {
+                processFlowIndex = processList.get(0);
+                processFlowIndex.setState("complete");
+                processFlowIndex.setResult(reason);
+                processFlowIndex.setAuditTime(new Date());
+                int update = ProcessFlowDao.update(processFlowIndex);
+                System.out.println("更新了多少行 = " + update);
+            }
+            AdmLeaveFormDao leaveFormDao = sqlSession.getMapper(AdmLeaveFormDao.class);
+            AdmLeaveForm leaveForm = leaveFormDao.queryById(formId);
+            //2.如果当前任务是最后一个节点,代表流程结束,更新请假单状态为对应的approved/refused
+            if (processFlowIndex.getIsLast() == 1) {
+//                approved | refused
+                leaveForm.setState(presult);
+                leaveFormDao.update(leaveForm);
+            } else {
+                //        3.如果当前任务不是最后一个节点且审批通过,那下一个节点的状态从ready变为process
+                List<AdmProcessFlow> readyList = admProcessFlows.stream()
+                        .filter(admProcessFlow
+                                -> admProcessFlow.getState().equals("ready")).collect(Collectors.toList());
+                if (presult.equals(approved)) {
+                    AdmProcessFlow readyProcess = readyList.get(0);
+                    readyProcess.setState(process);
+                    ProcessFlowDao.update(readyProcess);
+//        4.如果当前任务不是最后一个节点且审批驳回,则后续所有任务状态变为cancel,请假单状态变为refused
+                } else if (presult.equals("refused")) {
+                    for (AdmProcessFlow item : readyList) {
+                        item.setState("cancel");
+                        ProcessFlowDao.update(item);
+                    }
+                    leaveForm.setState("refused");
+                }
+
+            }
+            return null;
+        });
+
     }
 }
